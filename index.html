@@ -1,2180 +1,1061 @@
+
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
-
 <head>
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-
-<meta name="theme-color" content="#020711">
-
-<title>Amirali Asghari</title>
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080608">
+<title>AMIR ALI ASGHARI | Cyberpunk Ultra</title>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;800;900&display=swap');
+
+:root {
+  --red: #ff173d;
+  --gold: #e8bd68;
+  --bg: #080608;
+  --panel: rgba(20, 10, 15, .82);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: white;
+  font-family: Vazirmatn, Tahoma, sans-serif;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  background:
+    radial-gradient(ellipse at 75% 15%, #65091e 0, transparent 32%),
+    radial-gradient(ellipse at 15% 70%, #350713 0, transparent 35%),
+    linear-gradient(135deg, #080608, #14070d, #050507);
+}
+
+a { color: inherit; text-decoration: none; }
+button { font: inherit; }
+
+.ambient {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.moon {
+  position: absolute;
+  width: min(42vw, 420px);
+  aspect-ratio: 1;
+  top: 5%;
+  left: 8%;
+  border-radius: 50%;
+  opacity: .55;
+  background: radial-gradient(circle at 35% 30%, #ff7785, #b30b2b 40%, #420615 70%, transparent 72%);
+  filter: drop-shadow(0 0 45px #ff002b);
+}
+
+.moon::after {
+  content: "";
+  position: absolute;
+  inset: -20px;
+  border: 1px solid #ff234855;
+  border-radius: 50%;
+  box-shadow: 0 0 60px #f002;
+}
+
+.city {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 30%;
+  opacity: .45;
+  background: repeating-linear-gradient(90deg, transparent 0 30px, #9d183122 31px 33px);
+  clip-path: polygon(0 60%,5% 60%,5% 35%,9% 35%,9% 70%,14% 70%,14% 20%,18% 20%,18% 58%,23% 58%,23% 40%,29% 40%,29% 65%,34% 65%,34% 15%,38% 15%,38% 60%,45% 60%,45% 32%,50% 32%,50% 68%,57% 68%,57% 20%,61% 20%,61% 57%,70% 57%,70% 35%,75% 35%,75% 65%,83% 65%,83% 22%,88% 22%,88% 60%,100% 60%,100% 100%,0 100%);
+}
+
+.particles {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #ff405d;
+  box-shadow: 0 0 10px #ff173d;
+  animation: float 7s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,100% { transform: translateY(0); opacity: .2; }
+  50% { transform: translateY(-25px); opacity: 1; }
+}
+
+.layout {
+  width: min(1250px, 100%);
+  margin: auto;
+  padding: 24px;
+  display: grid;
+  grid-template-columns: 68px minmax(0, 1fr);
+  gap: 22px;
+}
+
+/* منوی کناری؛ فقط AS، OMEGA و موزیک */
+
+.sidebar {
+  position: sticky;
+  top: 24px;
+  height: calc(100vh - 48px);
+  min-height: 440px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 13px;
+  padding: 13px 7px;
+  border: 1px solid #ffffff18;
+  border-radius: 22px;
+  background: #100b10dd;
+  backdrop-filter: blur(18px);
+  z-index: 10;
+}
+
+.logo {
+  width: 43px;
+  height: 43px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  font-weight: 900;
+  background: linear-gradient(145deg, #ff274a, #680016);
+  box-shadow: 0 0 25px #ff173d44;
+}
+
+.side-link, .icon-button {
+  width: 43px;
+  height: 43px;
+  display: grid;
+  place-items: center;
+  border: 1px solid transparent;
+  border-radius: 13px;
+  background: transparent;
+  color: #b8a9b0;
+  cursor: pointer;
+  transition: .25s;
+}
+
+.side-link:hover, .side-link.active, .icon-button:hover {
+  color: white;
+  background: #ff173d1b;
+  border-color: #ff173d66;
+}
+
+.side-link svg, .icon-button svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.side-space { flex: 1; }
+.content { min-width: 0; }
+
+/* نوار بالا */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 4px 0 22px;
+  color: #b6a9af;
+  font-size: 11px;
+}
+
+.brandline { letter-spacing: 1.5px; }
+
+.brandline::before {
+  content: "";
+  display: inline-block;
+  width: 22px;
+  height: 1px;
+  margin-left: 9px;
+  vertical-align: middle;
+  background: var(--red);
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid #ffffff18;
+  border-radius: 30px;
+  background: #ffffff06;
+}
+
+.status i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #64e6a1;
+  box-shadow: 0 0 10px #64e6a1;
+}
+
+.music-mini {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 11px;
+  border: 1px solid #ffffff18;
+  border-radius: 13px;
+  background: #ffffff08;
+  font-size: 10px;
+}
+
+.music-mini button {
+  color: white;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.eq {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 18px;
+}
+
+.eq span {
+  width: 3px;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--red);
+  animation: equalize .6s infinite alternate;
+}
+
+.eq span:nth-child(2) { height: 15px; animation-delay: .2s; }
+.eq span:nth-child(3) { height: 11px; animation-delay: .4s; }
+
+@keyframes equalize {
+  to { height: 3px; opacity: .5; }
+}
+
+/* انتخاب زبان */
+
+.language-switch {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 10px;
+  border: 1px solid #ff173d55;
+  border-radius: 12px;
+  background: #100b10;
+  white-space: nowrap;
+}
+
+.language-switch button {
+  color: #fff;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.language-switch button.active,
+.language-switch button:hover {
+  color: #ff405e;
+}
+
+/* بخش اصلی */
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  min-height: 590px;
+  border: 1px solid #ff24422b;
+  border-radius: 29px;
+  background:
+    radial-gradient(ellipse at 72% 38%, #a20c2a35, transparent 45%),
+    linear-gradient(115deg, #090709ef, #17070fe8);
+  box-shadow: 0 25px 90px #0008;
+}
+
+.hero-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 25px;
+  min-height: 590px;
+  padding: clamp(24px, 5vw, 58px);
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--gold);
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+.eyebrow::before {
+  content: "";
+  width: 27px;
+  height: 1px;
+  background: var(--gold);
+}
+
+h1 {
+  margin: 23px 0 17px;
+  font-size: clamp(38px, 5.5vw, 70px);
+  line-height: 1.18;
+  font-weight: 900;
+  letter-spacing: -2px;
+  direction: ltr;
+  text-align: right;
+}
+
+h1 span {
+  display: block;
+  color: transparent;
+  -webkit-text-stroke: 1px #ff405e;
+  text-shadow: 0 0 35px #ff173d30;
+}
+
+.intro {
+  max-width: 450px;
+  color: #c0b4bb;
+  font-size: 13px;
+  line-height: 2.2;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 25px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 12px 18px;
+  border: 1px solid #ffffff2b;
+  border-radius: 12px;
+  background: #ffffff08;
+  color: white;
+  font-size: 12px;
+  cursor: pointer;
+  transition: .25s;
+}
+
+.btn.primary {
+  border-color: #ff526b;
+  background: linear-gradient(120deg, #ff2448, #a80024);
+  box-shadow: 0 9px 28px #ff173d30;
+}
+
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px #ff173d30;
+}
+
+.hero-note {
+  margin-top: 30px;
+  color: #8e7e86;
+  font-size: 9px;
+  letter-spacing: 1.4px;
+}
+
+/* عکس پروفایل؛ بدون نوشته‌های کناری */
+
+.portrait-zone {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 390px;
+}
+
+.orbit {
+  position: absolute;
+  width: min(32vw, 360px);
+  aspect-ratio: 1;
+  border: 1px solid #ff2a4b66;
+  border-radius: 50%;
+  box-shadow: 0 0 55px #ff173d18, inset 0 0 45px #ff173d10;
+  animation: spin 30s linear infinite;
+}
+
+.orbit::before, .orbit::after {
+  content: "";
+  position: absolute;
+  inset: 15px;
+  border: 1px solid #e8bd683d;
+  border-radius: 50%;
+  transform: rotateX(65deg) rotate(25deg);
+}
+
+.orbit::after {
+  inset: -18px;
+  border-color: #ff173d3b;
+  transform: rotateX(70deg) rotate(-35deg);
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.avatar-wrap {
+  position: relative;
+  z-index: 2;
+  width: min(26vw, 275px);
+  aspect-ratio: 1;
+  padding: 7px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #ffb0b9, #ff173d 35%, #2b0913 72%, #e8bd68);
+  box-shadow: 0 0 0 1px #ff6677, 0 0 40px #ff173d66, 0 0 100px #ff173d22;
+}
+
+.avatar-wrap::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border: 1px solid #ff3b5a99;
+  border-radius: 50%;
+  animation: pulse 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes pulse {
+  50% { transform: scale(1.05); opacity: .3; }
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: 50%;
+  object-fit: cover;
+  background: radial-gradient(circle, #4a1827, #100a0e);
+}
+
+.avatar-fallback {
+  position: absolute;
+  inset: 7px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 30%, #571225, #10090e);
+  color: #ff4a64;
+  font-size: 65px;
+  font-weight: 900;
+  z-index: -1;
+}
+
+.scroll-cue {
+  position: absolute;
+  bottom: 17px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #85737b;
+  font-size: 8px;
+  letter-spacing: 3px;
+}
+
+/* بخش ارتباطات */
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    -webkit-tap-highlight-color:transparent;
+.section {
+  margin-top: 24px;
+  padding: clamp(21px, 4vw, 36px);
+  border: 1px solid #ffffff16;
+  border-radius: 23px;
+  background: var(--panel);
+  backdrop-filter: blur(14px);
 }
 
-html{
-    scroll-behavior:smooth;
+.section-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 23px;
 }
 
-body{
-    min-height:100vh;
-    background:#01040a;
-    color:white;
-    font-family:Arial,sans-serif;
-    overflow-x:hidden;
+.kicker {
+  color: var(--red);
+  font-size: 10px;
+  letter-spacing: 2px;
 }
 
-/* ================= BACKGROUND ================= */
-
-#universe{
-    position:fixed;
-    inset:0;
-    overflow:hidden;
-    z-index:0;
-
-    background:
-        radial-gradient(circle at 50% 10%,rgba(0,150,255,.23),transparent 30%),
-        radial-gradient(circle at 0% 80%,rgba(0,70,255,.18),transparent 30%),
-        radial-gradient(circle at 100% 70%,rgba(0,220,255,.12),transparent 30%),
-        #01040a;
-}
-
-.orb{
-    position:absolute;
-    border-radius:50%;
-    filter:blur(80px);
-    pointer-events:none;
-}
-
-.orb1{
-    width:320px;
-    height:320px;
-    background:#006cff;
-    top:-120px;
-    left:-100px;
-    animation:orb1 12s infinite alternate ease-in-out;
-}
-
-.orb2{
-    width:280px;
-    height:280px;
-    background:#00c8ff;
-    right:-120px;
-    top:35%;
-    animation:orb2 15s infinite alternate ease-in-out;
-}
-
-.orb3{
-    width:350px;
-    height:350px;
-    background:#002eff;
-    bottom:-220px;
-    left:20%;
-    animation:orb3 18s infinite alternate ease-in-out;
-}
-
-@keyframes orb1{
-    to{
-        transform:translate(180px,230px) scale(1.35);
-    }
-}
-
-@keyframes orb2{
-    to{
-        transform:translate(-170px,120px) scale(1.4);
-    }
-}
-
-@keyframes orb3{
-    to{
-        transform:translate(100px,-150px) scale(1.4);
-    }
-}
-
-/* ================= GRID ================= */
-
-.grid{
-    position:absolute;
-    inset:-20%;
-    opacity:.12;
-
-    background-image:
-        linear-gradient(rgba(0,170,255,.4) 1px,transparent 1px),
-        linear-gradient(90deg,rgba(0,170,255,.4) 1px,transparent 1px);
-
-    background-size:45px 45px;
-
-    transform:
-        perspective(450px)
-        rotateX(60deg)
-        scale(1.4);
-
-    transform-origin:center bottom;
-
-    animation:gridMove 10s linear infinite;
-}
-
-@keyframes gridMove{
-    to{
-        background-position:0 45px,45px 0;
-    }
-}
-
-/* ================= STARS ================= */
-
-#stars{
-    position:absolute;
-    inset:0;
-}
-
-.star{
-    position:absolute;
-    width:2px;
-    height:2px;
-    border-radius:50%;
-    background:white;
-
-    box-shadow:
-        0 0 7px #00bfff,
-        0 0 16px #008cff;
-
-    animation:starFall linear infinite;
-}
-
-@keyframes starFall{
-
-    from{
-        transform:translateY(110vh) scale(.2);
-        opacity:0;
-    }
-
-    10%{
-        opacity:1;
-    }
-
-    50%{
-        transform:translateY(50vh) scale(1.5);
-    }
-
-    to{
-        transform:translateY(-10vh) scale(.2);
-        opacity:0;
-    }
-}
-
-/* ================= METEORS ================= */
-
-.meteor{
-    position:absolute;
-    width:120px;
-    height:2px;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            #00c8ff,
-            white
-        );
-
-    box-shadow:
-        0 0 10px #00bfff,
-        0 0 25px #008cff;
-
-    transform:rotate(-35deg);
-
-    opacity:0;
-
-    animation:meteor 8s linear infinite;
-}
-
-.meteor1{
-    top:10%;
-    left:80%;
-    animation-delay:2s;
-}
-
-.meteor2{
-    top:35%;
-    left:30%;
-    animation-delay:6s;
-}
-
-.meteor3{
-    top:60%;
-    left:90%;
-    animation-delay:10s;
-}
-
-@keyframes meteor{
-
-    0%,75%{
-        opacity:0;
-        transform:
-            translate(0,0)
-            rotate(-35deg);
-    }
-
-    78%{
-        opacity:1;
-    }
-
-    100%{
-        opacity:0;
-        transform:
-            translate(-500px,500px)
-            rotate(-35deg);
-    }
-}
-
-/* ================= SCANLINES ================= */
-
-.scanlines{
-    position:fixed;
-    inset:0;
-
-    z-index:3;
-
-    pointer-events:none;
-
-    opacity:.07;
-
-    background:
-        repeating-linear-gradient(
-            0deg,
-            transparent 0px,
-            transparent 3px,
-            rgba(0,180,255,.25) 4px
-        );
-}
-
-/* ================= MAIN ================= */
-
-.container{
-    width:100%;
-    max-width:480px;
-
-    margin:auto;
-
-    padding:42px 14px 45px;
-
-    position:relative;
-
-    z-index:10;
-
-    text-align:center;
-
-    transition:transform .2s ease;
-}
-
-/* ================= HUD ================= */
-
-.top-hud{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    margin-bottom:25px;
-
-    font-size:9px;
-
-    color:#5e91ad;
-
-    letter-spacing:2px;
-}
-
-.hud-left,
-.hud-right{
-    display:flex;
-    align-items:center;
-
-    gap:7px;
-}
-
-.online-dot{
-    width:7px;
-    height:7px;
-
-    border-radius:50%;
-
-    background:#00ff9d;
-
-    box-shadow:
-        0 0 8px #00ff9d,
-        0 0 18px #00ff9d;
-
-    animation:pulse 1.5s infinite;
-}
-
-@keyframes pulse{
-
-    50%{
-        opacity:.35;
-        transform:scale(.7);
-    }
-}
-
-/* ================= PROFILE ================= */
-
-.profile-zone{
-    width:180px;
-    height:180px;
-
-    margin:0 auto 25px;
-
-    position:relative;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-}
-
-.profile-zone::before{
-    content:"";
-
-    position:absolute;
-
-    inset:-12px;
-
-    border-radius:50%;
-
-    border:
-        1px solid rgba(0,200,255,.65);
-
-    box-shadow:
-        0 0 20px rgba(0,170,255,.5);
-
-    animation:spin 8s linear infinite;
-}
-
-.profile-zone::after{
-    content:"";
-
-    position:absolute;
-
-    inset:-25px;
-
-    border-radius:50%;
-
-    border:
-        1px dashed rgba(0,150,255,.28);
-
-    animation:
-        spinReverse
-        15s
-        linear
-        infinite;
-}
-
-@keyframes spin{
-
-    to{
-        transform:rotate(360deg);
-    }
-}
-
-@keyframes spinReverse{
-
-    to{
-        transform:rotate(-360deg);
-    }
-}
-
-.profile{
-    width:155px;
-    height:155px;
-
-    padding:5px;
-
-    border-radius:50%;
-
-    background:
-        linear-gradient(
-            135deg,
-            #00ffff,
-            #0077ff,
-            #0055ff,
-            #00c8ff
-        );
-
-    background-size:400% 400%;
-
-    animation:
-        gradient
-        4s
-        ease
-        infinite;
-
-    box-shadow:
-        0 0 20px #008cff,
-        0 0 60px rgba(0,140,255,.6),
-        0 0 110px rgba(0,140,255,.25);
-
-    position:relative;
-
-    z-index:2;
-}
-
-@keyframes gradient{
-
-    0%{
-        background-position:0% 50%;
-    }
-
-    50%{
-        background-position:100% 50%;
-    }
-
-    100%{
-        background-position:0% 50%;
-    }
-}
-
-.profile img{
-    width:100%;
-    height:100%;
-
-    object-fit:cover;
-
-    border-radius:50%;
-
-    border:4px solid #01040a;
-}
-
-/* ================= NAME ================= */
-
-h1{
-    font-size:34px;
-
-    margin-bottom:8px;
-
-    letter-spacing:1px;
-
-    text-shadow:
-        0 0 20px rgba(255,255,255,.15);
-}
-
-h1 span{
-    color:#00c8ff;
-
-    text-shadow:
-        0 0 10px #00c8ff,
-        0 0 30px #008cff,
-        0 0 60px rgba(0,140,255,.6);
-}
-
-.subtitle{
-    color:#7f9aac;
-
-    letter-spacing:5px;
-
-    font-size:12px;
-
-    margin-bottom:18px;
-}
-
-.line{
-    width:100px;
-    height:2px;
-
-    margin:0 auto 28px;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            #00c8ff,
-            transparent
-        );
-
-    box-shadow:
-        0 0 15px #008cff;
-
-    animation:
-        linePulse
-        2s
-        infinite
-        alternate;
-}
-
-@keyframes linePulse{
-
-    to{
-        width:170px;
-
-        box-shadow:
-            0 0 30px #00bfff;
-    }
-}
-
-/* ================= BUTTONS ================= */
-
-.buttons{
-    display:flex;
-    flex-direction:column;
-
-    gap:14px;
-}
-
-.btn{
-    width:100%;
-
-    min-height:76px;
-
-    display:flex;
-    align-items:center;
-
-    position:relative;
-
-    overflow:hidden;
-
-    padding:11px 17px;
-
-    border-radius:21px;
-
-    color:white;
-
-    text-decoration:none;
-
-    background:
-        linear-gradient(
-            120deg,
-            rgba(0,105,190,.32),
-            rgba(2,12,25,.72)
-        );
-
-    border:
-        1px solid rgba(0,180,255,.5);
-
-    backdrop-filter:blur(18px);
-
-    box-shadow:
-        0 0 15px rgba(0,140,255,.13),
-        inset 0 0 25px rgba(0,140,255,.05);
-
-    transition:
-        transform .25s ease,
-        box-shadow .25s ease,
-        border .25s ease;
-
-    animation:
-        buttonIn
-        .7s
-        ease
-        both;
-}
-
-.btn:nth-child(1){
-    animation-delay:.1s;
-}
-
-.btn:nth-child(2){
-    animation-delay:.2s;
-}
-
-.btn:nth-child(3){
-    animation-delay:.3s;
-}
-
-.btn:nth-child(4){
-    animation-delay:.4s;
-}
-
-.btn:nth-child(5){
-    animation-delay:.5s;
-}
-
-@keyframes buttonIn{
-
-    from{
-        opacity:0;
-        transform:
-            translateY(30px)
-            scale(.94);
-    }
-
-    to{
-        opacity:1;
-        transform:
-            translateY(0)
-            scale(1);
-    }
-}
-
-.btn::before{
-    content:"";
-
-    position:absolute;
-
-    width:100px;
-    height:250%;
-
-    left:-150px;
-    top:-70%;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(255,255,255,.22),
-            transparent
-        );
-
-    transform:rotate(20deg);
-
-    transition:.8s;
-}
-
-.btn:hover::before{
-    left:130%;
-}
-
-.btn:hover{
-    transform:
-        translateY(-5px)
-        scale(1.015);
-
-    border-color:#00d9ff;
-
-    box-shadow:
-        0 0 25px rgba(0,190,255,.5),
-        0 0 60px rgba(0,140,255,.2),
-        inset 0 0 30px rgba(0,180,255,.1);
-}
-
-/* ================= ICONS ================= */
-
-.icon{
-    width:50px;
-    height:50px;
-
-    flex-shrink:0;
-
-    border-radius:50%;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    margin-left:14px;
-
-    font-size:21px;
-
-    transition:.3s;
-}
-
-.btn:hover .icon{
-    transform:
-        scale(1.14)
-        rotate(-7deg);
-}
-
-.phone{
-    background:
-        linear-gradient(
-            135deg,
-            #00d9ff,
-            #006eff
-        );
-
-    box-shadow:
-        0 0 18px rgba(0,180,255,.5);
-}
-
-.instagram{
-    background:
-        linear-gradient(
-            135deg,
-            #833ab4,
-            #fd1d1d,
-            #fcb045
-        );
-
-    box-shadow:
-        0 0 18px rgba(253,29,29,.3);
-}
-
-.telegram{
-    background:
-        linear-gradient(
-            135deg,
-            #2AABEE,
-            #229ED9
-        );
-
-    box-shadow:
-        0 0 18px rgba(42,171,238,.5);
-}
-
-.whatsapp{
-    background:
-        linear-gradient(
-            135deg,
-            #25D366,
-            #128C7E
-        );
-
-    box-shadow:
-        0 0 18px rgba(37,211,102,.4);
-}
-
-.email{
-    background:
-        linear-gradient(
-            135deg,
-            #00d9ff,
-            #006eff
-        );
-
-    box-shadow:
-        0 0 18px rgba(0,180,255,.5);
-}
-
-/* ================= TEXT ================= */
-
-.text{
-    flex:1;
-
-    text-align:right;
-}
-
-.text strong{
-    display:block;
-
-    font-size:17px;
-
-    margin-bottom:5px;
-}
-
-.text small{
-    display:block;
-
-    direction:ltr;
-
-    color:#91aabd;
-
-    font-size:11px;
-}
-
-.arrow{
-    color:#72ddff;
-
-    font-size:30px;
-
-    margin-right:7px;
-
-    transition:.3s;
-}
-
-.btn:hover .arrow{
-    transform:translateX(-6px);
-
-    color:white;
-
-    text-shadow:
-        0 0 15px #00c8ff;
-}
-
-/* ================= QUICK ACTIONS ================= */
-
-.quick{
-    display:grid;
-
-    grid-template-columns:
-        repeat(3,1fr);
-
-    gap:9px;
-
-    margin-top:15px;
-}
-
-.quick-btn{
-    border:
-        1px solid rgba(0,170,255,.35);
-
-    background:
-        rgba(2,18,32,.65);
-
-    color:#9ddfff;
-
-    border-radius:15px;
-
-    min-height:52px;
-
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
-
-    gap:6px;
-
-    font-size:10px;
-
-    cursor:pointer;
-
-    backdrop-filter:blur(12px);
-
-    transition:.25s;
-}
-
-.quick-btn:hover,
-.quick-btn:active{
-
-    background:
-        rgba(0,130,220,.35);
-
-    color:white;
-
-    box-shadow:
-        0 0 20px rgba(0,160,255,.3);
-
-    transform:
-        translateY(-3px);
-}
-
-/* ================= EXTRA ACTIONS ================= */
-
-.extra-actions{
-    margin-top:10px;
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(2,1fr);
-
-    gap:9px;
-}
-
-.extra-btn{
-    min-height:52px;
-
-    border:
-        1px solid rgba(0,170,255,.28);
-
-    background:
-        rgba(2,15,28,.58);
-
-    border-radius:15px;
-
-    color:#82b9d3;
-
-    cursor:pointer;
-
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
-
-    gap:8px;
-
-    font-size:11px;
-
-    transition:.25s;
-}
-
-.extra-btn i{
-    color:#00c8ff;
-}
-
-.extra-btn:hover{
-
-    color:white;
-
-    border-color:#00c8ff;
-
-    box-shadow:
-        0 0 18px rgba(0,180,255,.3);
-
-    transform:
-        translateY(-2px);
-}
-
-/* ================= NFC ================= */
-
-.nfc{
-    margin-top:20px;
-
-    padding:14px;
-
-    border-radius:18px;
-
-    border:
-        1px solid rgba(0,180,255,.25);
-
-    background:
-        rgba(2,15,27,.5);
-
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
-
-    gap:10px;
-
-    color:#6898af;
-
-    font-size:10px;
-}
-
-.nfc i{
-    color:#00c8ff;
-
-    animation:
-        nfcPulse
-        1.5s
-        infinite;
-}
-
-@keyframes nfcPulse{
-
-    50%{
-        transform:scale(1.3);
-
-        filter:
-            drop-shadow(
-                0 0 10px
-                #00c8ff
-            );
-    }
-}
-
-/* ================= FOLLOW ================= */
-
-.follow{
-    margin-top:35px;
-}
-
-.follow-title{
-    color:#a8c0cf;
-
-    letter-spacing:2px;
-
-    margin-bottom:17px;
-
-    font-size:14px;
-}
-
-.socials{
-    display:flex;
-
-    justify-content:center;
-
-    gap:16px;
-}
-
-.social{
-    width:52px;
-    height:52px;
-
-    border-radius:50%;
-
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
-
-    color:white;
-
-    text-decoration:none;
-
-    border:
-        1px solid #008cff;
-
-    background:
-        rgba(3,18,32,.65);
-
-    backdrop-filter:blur(10px);
-
-    box-shadow:
-        0 0 15px rgba(0,140,255,.25);
-
-    transition:.3s;
-}
-
-.social:hover{
-
-    transform:
-        translateY(-6px)
-        scale(1.12);
-
-    background:#008cff;
-
-    box-shadow:
-        0 0 25px #008cff;
-}
-
-/* ================= FOOTER ================= */
-
-.footer{
-    margin-top:25px;
-
-    color:#385266;
-
-    font-size:9px;
-
-    letter-spacing:2px;
-}
-
-/* ================= MODAL ================= */
-
-.modal{
-    position:fixed;
-
-    inset:0;
-
-    z-index:100;
-
-    display:none;
-
-    align-items:center;
-    justify-content:center;
-
-    padding:20px;
-
-    background:
-        rgba(0,3,8,.82);
-
-    backdrop-filter:blur(15px);
-}
-
-.modal.show{
-    display:flex;
-}
-
-.modal-box{
-    width:100%;
-
-    max-width:390px;
-
-    max-height:90vh;
-
-    overflow:auto;
-
-    border:
-        1px solid rgba(0,190,255,.6);
-
-    border-radius:25px;
-
-    padding:25px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(0,50,90,.8),
-            rgba(2,8,18,.95)
-        );
-
-    box-shadow:
-        0 0 30px rgba(0,170,255,.35),
-        0 0 100px rgba(0,100,255,.15);
-
-    animation:
-        modalIn
-        .35s
-        ease;
-
-    position:relative;
-}
-
-@keyframes modalIn{
-
-    from{
-        opacity:0;
-
-        transform:
-            scale(.85)
-            translateY(20px);
-    }
-
-    to{
-        opacity:1;
-
-        transform:
-            scale(1)
-            translateY(0);
-    }
-}
-
-.close{
-    position:absolute;
-
-    top:12px;
-    left:15px;
-
-    width:35px;
-    height:35px;
-
-    border-radius:50%;
-
-    border:
-        1px solid #008cff;
-
-    background:#061522;
-
-    color:white;
-
-    cursor:pointer;
-}
-
-.modal-title{
-    color:#00c8ff;
-
-    font-size:22px;
-
-    margin-bottom:20px;
-
-    text-shadow:
-        0 0 15px #008cff;
+h2 {
+  margin: 8px 0 0;
+  font-size: clamp(23px, 3vw, 31px);
 }
-
-.modal-section{
-    margin-bottom:18px;
-
-    padding:15px;
-
-    border-radius:15px;
-
-    background:
-        rgba(0,100,180,.08);
 
-    border:
-        1px solid rgba(0,160,255,.18);
+.section-desc {
+  max-width: 350px;
+  color: #988991;
+  font-size: 11px;
+  line-height: 2;
 }
 
-.modal-section strong{
-    display:block;
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
 
-    color:#7edfff;
-
-    margin-bottom:8px;
+.contact-card {
+  min-width: 0;
+  padding: 17px 13px;
+  border: 1px solid #ffffff17;
+  border-radius: 16px;
+  background: #ffffff04;
+  transition: .25s;
 }
-
-.modal-section p{
-    color:#9eb6c5;
-
-    font-size:13px;
 
-    line-height:1.8;
+.contact-card:hover {
+  transform: translateY(-4px);
+  border-color: #ff294766;
+  background: #ff173d0b;
 }
-
-/* ================= QR ================= */
-
-#qrcode{
-    width:220px;
-    height:220px;
-
-    margin:15px auto;
-
-    padding:10px;
 
-    background:white;
-
-    border-radius:15px;
-
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
+.contact-icon {
+  width: 43px;
+  height: 43px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 14px;
+  border-radius: 13px;
+  background: #ff173d15;
+  color: #ff4b65;
 }
 
-#qrcode img{
-    max-width:100%;
+.contact-icon svg {
+  display: block;
+  width: 23px;
+  height: 23px;
 }
-
-/* ================= TOAST ================= */
-
-.toast{
-    position:fixed;
-
-    bottom:80px;
-    left:50%;
-
-    transform:
-        translateX(-50%)
-        translateY(20px);
-
-    z-index:200;
-
-    padding:12px 20px;
-
-    border-radius:14px;
-
-    background:
-        rgba(2,20,35,.95);
-
-    border:
-        1px solid #00bfff;
-
-    color:white;
-
-    font-size:12px;
 
-    box-shadow:
-        0 0 25px rgba(0,170,255,.4);
-
-    backdrop-filter:blur(15px);
-
-    opacity:0;
-
-    transition:.3s;
+.contact-card strong {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 13px;
 }
 
-.toast.show{
-    opacity:1;
-
-    transform:
-        translateX(-50%)
-        translateY(0);
+.contact-card small {
+  display: block;
+  color: #9b8d95;
+  font-size: 10px;
+  overflow-wrap: anywhere;
 }
-
-/* ================= MOBILE ================= */
-
-@media(max-width:500px){
-
-    .profile-zone{
-        width:145px;
-        height:145px;
-    }
+
+.arrow {
+  display: block;
+  margin-top: 12px;
+  color: var(--gold);
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 23px;
+}
+
+.stat {
+  padding: 15px 5px;
+  text-align: center;
+  border-top: 1px solid #ff294733;
+}
 
-    .profile{
-        width:130px;
-        height:130px;
-    }
-
-    h1{
-        font-size:29px;
-    }
-
-    .btn{
-        min-height:72px;
-
-        border-radius:19px;
-    }
-
-    .icon{
-        width:45px;
-        height:45px;
-
-        margin-left:11px;
-    }
-
-    .text strong{
-        font-size:16px;
-    }
-
-    .text small{
-        font-size:10px;
-    }
+.stat strong {
+  display: block;
+  font-size: 22px;
+}
+
+.stat span {
+  color: #91848b;
+  font-size: 9px;
+}
+
+/* بخش OMEGA */
+
+.omega {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  overflow: hidden;
+  margin-top: 24px;
+  padding: clamp(24px, 5vw, 43px);
+  border: 1px solid #d6aa5755;
+  border-radius: 23px;
+  background: linear-gradient(110deg, #16100b, #30200e 55%, #100b09);
+}
+
+.omega::after {
+  content: "Ω";
+  position: absolute;
+  top: -75px;
+  left: 9%;
+  color: #e8bd6809;
+  font-family: Georgia, serif;
+  font-size: 280px;
+  pointer-events: none;
+}
+
+.omega .kicker { color: var(--gold); }
+
+.omega h2 {
+  color: #f0d39a;
+  font-family: Georgia, serif;
+  font-size: clamp(35px, 5vw, 54px);
+  letter-spacing: 5px;
+}
+
+.omega p {
+  max-width: 480px;
+  color: #b5a18a;
+  font-size: 12px;
+  line-height: 2;
+}
+
+.omega .btn {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  border-color: #e8bd6877;
+  color: #f0d39a;
+}
+
+footer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 25px 4px 15px;
+  color: #81727a;
+  font-size: 10px;
+}
+
+footer b { color: #c5a0a9; }
+
+.toast {
+  position: fixed;
+  z-index: 30;
+  bottom: 22px;
+  left: 50%;
+  transform: translate(-50%, 20px);
+  max-width: 90%;
+  padding: 12px 16px;
+  border: 1px solid #ff294755;
+  border-radius: 12px;
+  background: #1a1015;
+  color: white;
+  font-size: 12px;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: .25s;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* نسخه موبایل */
+
+@media (max-width: 850px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    padding: 30px 25px 38px;
+  }
+
+  .portrait-zone { min-height: 330px; }
+  .orbit { width: min(65vw, 340px); }
+  .avatar-wrap { width: min(52vw, 260px); }
+  .hero-copy { text-align: center; }
+  .eyebrow { justify-content: center; }
+  .intro { margin-inline: auto; }
+  .actions { justify-content: center; }
+  .hero-note { text-align: center; }
+  .contact-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .scroll-cue { display: none; }
+}
+
+@media (max-width: 560px) {
+  .layout { display: block; padding: 12px; }
+
+  .sidebar {
+    position: fixed;
+    top: auto;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(94%, 240px);
+    height: auto;
+    min-height: 0;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 7px;
+    gap: 2px;
+    border-radius: 18px;
+    background: #100b10f2;
+  }
+
+  .side-space { display: none; }
+  .logo, .side-link, .icon-button { width: 37px; height: 37px; }
+  .topbar { margin: 5px 2px 14px; flex-wrap: wrap; }
+  .brandline { font-size: 8px; letter-spacing: .5px; }
+  .status { display: none; }
+  .music-mini { padding: 6px 8px; font-size: 9px; }
+  .language-switch { padding: 6px 8px; }
+  .hero-grid { padding: 20px 16px 30px; }
+  .portrait-zone { min-height: 280px; }
+  .orbit { width: 72vw; }
+  .avatar-wrap { width: 56vw; }
+  h1 { font-size: 43px; }
+  .intro { font-size: 12px; }
+  .section { padding: 21px 15px; }
+  .section-head { align-items: start; flex-direction: column; }
+  .contact-grid { gap: 9px; }
+  .contact-card { padding: 13px 10px; }
+  .contact-card small { font-size: 9px; }
+  .omega { align-items: flex-start; flex-direction: column; }
+  .stats { gap: 4px; }
+  .stat strong { font-size: 18px; }
+  footer { padding-bottom: 75px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition: none !important;
+  }
 }
-
 </style>
 </head>
 
-
 <body>
 
-<!-- ================= BACKGROUND ================= -->
-
-<div id="universe">
-
-    <div class="orb orb1"></div>
-
-    <div class="orb orb2"></div>
-
-    <div class="orb orb3"></div>
-
-    <div class="grid"></div>
-
-    <div id="stars"></div>
-
-    <div class="meteor meteor1"></div>
-
-    <div class="meteor meteor2"></div>
-
-    <div class="meteor meteor3"></div>
-
+<div class="ambient" aria-hidden="true">
+  <div class="moon"></div>
+  <div class="city"></div>
 </div>
 
-<div class="scanlines"></div>
-
-
-<!-- ================= MAIN ================= -->
-
-<main class="container" id="card">
-
-
-    <!-- HUD -->
-
-    <div class="top-hud">
-
-        <div class="hud-left">
-
-            <span class="online-dot"></span>
-
-            ONLINE
-
-        </div>
-
-        <div class="hud-right">
-
-            DIGITAL IDENTITY
-
-        </div>
-
-    </div>
-
-
-    <!-- PROFILE -->
-
-    <div class="profile-zone">
-
-        <div class="profile">
-
-            <img
-                src="profile.jpg"
-                alt="Amirali Asghari">
-
-        </div>
-
-    </div>
-
-
-    <!-- NAME -->
-
-    <h1>
-
-        Amirali
-        <span>Asghari</span>
-
-    </h1>
-
-
-    <div class="subtitle">
-
-        STAY CONNECTED
-
-    </div>
-
-
-    <div class="line"></div>
-
-
-    <!-- ================= CONTACT BUTTONS ================= -->
-
-    <div class="buttons">
-
-
-        <!-- PHONE -->
-
-        <a
-            class="btn"
-            href="tel:+989962053197">
-
-            <div class="icon phone">
-
-                <i class="fa-solid fa-phone"></i>
-
-            </div>
-
-            <div class="text">
-
-                <strong>
-                    PHONE
-                </strong>
-
-                <small>
-                    
-                </small>
-
-            </div>
-
-            <div class="arrow">
-                ‹
-            </div>
-
-        </a>
-
-
-        <!-- INSTAGRAM -->
-
-        <a
-            class="btn"
-            href="https://instagram.com/_amirgk"
-            target="_blank"
-            rel="noopener">
-
-            <div class="icon instagram">
-
-                <i class="fa-brands fa-instagram"></i>
-
-            </div>
-
-            <div class="text">
-
-                <strong>
-                    INSTAGRAM
-                </strong>
-
-                <small>
-                    
-                </small>
-
-            </div>
-
-            <div class="arrow">
-                ‹
-            </div>
-
-        </a>
-
-
-        <!-- TELEGRAM -->
-
-        <a
-            class="btn"
-            href="https://t.me/Am_xo_ir"
-            target="_blank"
-            rel="noopener">
-
-            <div class="icon telegram">
-
-                <i class="fa-brands fa-telegram"></i>
-
-            </div>
-
-            <div class="text">
-
-                <strong>
-                    TELEGRAM
-                </strong>
-
-                <small>
-                    
-                </small>
-
-            </div>
-
-            <div class="arrow">
-                ‹
-            </div>
-
-        </a>
-
-
-        <!-- WHATSAPP -->
-
-        <a
-            class="btn"
-            href="https://wa.me/989962053197"
-            target="_blank"
-            rel="noopener">
-
-            <div class="icon whatsapp">
-
-                <i class="fa-brands fa-whatsapp"></i>
-
-            </div>
-
-            <div class="text">
-
-                <strong>
-                    WHATSAPP
-                </strong>
-
-                <small>
-                    
-                </small>
-
-            </div>
-
-            <div class="arrow">
-                ‹
-            </div>
-
-        </a>
-
-
-        <!-- EMAIL -->
-
-        <a
-            class="btn"
-            href="mailto:amirgk005@gmail.com">
-
-            <div class="icon email">
-
-                <i class="fa-solid fa-envelope"></i>
-
-            </div>
-
-            <div class="text">
-
-                <strong>
-                    EMAIL
-                </strong>
-
-                <small>
-                    
-                </small>
-
-            </div>
-
-            <div class="arrow">
-                ‹
-            </div>
-
-        </a>
-
-    </div>
-
-
-    <!-- ================= QUICK ACTIONS ================= -->
-
-    <div class="quick">
-
-
-        <!-- COPY PHONE -->
-
-        <button
-            class="quick-btn"
-            onclick="copyText(
-                '+989962053197',
-                'شماره تلفن'
-            )">
-
-            <i class="fa-regular fa-copy"></i>
-
-            COPY PHONE
-
-        </button>
-
-
-        <!-- SAVE CONTACT -->
-
-        <button
-            class="quick-btn"
-            onclick="saveContact()">
-
-            <i class="fa-regular fa-address-card"></i>
-
-            SAVE CONTACT
-
-        </button>
-
-
-        <!-- SHARE -->
-
-        <button
-            class="quick-btn"
-            onclick="sharePage()">
-
-            <i class="fa-solid fa-share-nodes"></i>
-
-            SHARE
-
-        </button>
-
-    </div>
-
-
-    <!-- ================= EXTRA ACTIONS ================= -->
-
-    <div class="extra-actions">
-
-
-        <!-- QR -->
-
-        <button
-            class="extra-btn"
-            onclick="openQR()">
-
-            <i class="fa-solid fa-qrcode"></i>
-
-            QR Code
-
-        </button>
-
-
-        <!-- INSTALL -->
-
-        <button
-            class="extra-btn"
-            onclick="showInstallInfo()">
-
-            <i class="fa-solid fa-mobile-screen-button"></i>
-
-            INSTALL
-
-        </button>
-
-    </div>
-
-
-    <!-- ================= NFC ================= -->
-
-    <div class="nfc">
-
-        <i class="fa-solid fa-wifi"></i>
-
-        yure divice is CONNECT
-
-    </div>
-
-
-    <!-- ================= FOLLOW ================= -->
-
-    <div class="follow">
-
-        <div class="follow-title">
-
-            — &nbsp; Follow Me &nbsp; —
-
-        </div>
-
-
-        <div class="socials">
-
-
-            <a
-                class="social"
-                href="https://instagram.com/_amirgk"
-                target="_blank"
-                rel="noopener">
-
-                <i class="fa-brands fa-instagram"></i>
-
+<div class="particles" id="particles"></div>
+
+<div class="layout">
+
+  <nav class="sidebar" aria-label="منوی اصلی">
+    <a class="logo" href="#home" aria-label="AS">AS</a>
+
+    <a class="side-link active" href="#omega" title="OMEGA" aria-label="OMEGA">
+      <svg viewBox="0 0 24 24">
+        <path d="M4 17V9a8 8 0 0 1 16 0v8M2 17h5m10 0h5"/>
+      </svg>
+    </a>
+
+    <div class="side-space"></div>
+
+    <button class="icon-button" id="soundToggle" title="موسیقی" aria-label="پخش یا توقف موسیقی">
+      <svg viewBox="0 0 24 24">
+        <path d="M9 18V5l12-2v13"/>
+        <circle cx="6" cy="18" r="3"/>
+        <circle cx="18" cy="16" r="3"/>
+      </svg>
+    </button>
+  </nav>
+
+  <main class="content">
+
+    <header class="topbar">
+      <div class="brandline" data-fa="دنیای دیجیتال شخصی" data-en="PERSONAL DIGITAL UNIVERSE">
+        دنیای دیجیتال شخصی
+      </div>
+
+      <div class="language-switch" aria-label="انتخاب زبان">
+        <button type="button" class="active" onclick="setLanguage('fa')">فا</button>
+        <span>|</span>
+        <button type="button" onclick="setLanguage('en')">EN</button>
+      </div>
+
+      <div class="music-mini">
+        <div class="eq"><span></span><span></span><span></span></div>
+        <span id="musicLabel">AMBIENT MODE</span>
+        <button id="musicButton" aria-label="پخش یا توقف موسیقی">▶</button>
+      </div>
+
+      <div class="status">
+        <i></i>
+        <span data-fa="آماده‌ی ارتباط" data-en="AVAILABLE TO CONNECT">آماده‌ی ارتباط</span>
+      </div>
+    </header>
+
+    <section class="hero" id="home">
+      <div class="hero-grid">
+
+        <div class="hero-copy">
+          <div class="eyebrow" data-fa="به دنیای من خوش اومدی" data-en="WELCOME TO MY WORLD">
+            به دنیای من خوش اومدی
+          </div>
+
+          <h1>AMIR ALI <span>ASGHARI</span></h1>
+
+          <p class="intro"
+             data-fa="به دنیای شخصی من خوش اومدی؛ جایی میان تکنولوژی، خلاقیت و استایل متفاوت. از اینجا می‌تونی مستقیم با من در ارتباط باشی."
+             data-en="Welcome to my personal world — a place where technology, creativity and a distinctive style meet. Connect with me directly.">
+            به دنیای شخصی من خوش اومدی؛ جایی میان تکنولوژی،
+            خلاقیت و استایل متفاوت. از اینجا می‌تونی مستقیم
+            با من در ارتباط باشی.
+          </p>
+
+          <div class="actions">
+            <a class="btn primary" href="#links"
+               data-fa="✦ ارتباط با من" data-en="✦ CONNECT WITH ME">
+              ✦ ارتباط با من
             </a>
 
-
-            <a
-                class="social"
-                href="https://t.me/Am_xo_ir"
-                target="_blank"
-                rel="noopener">
-
-                <i class="fa-brands fa-telegram"></i>
-
+            <a class="btn" href="#omega"
+               data-fa="Ω ورود به OMEGA" data-en="Ω EXPLORE OMEGA">
+              Ω ورود به OMEGA
             </a>
+          </div>
 
-
-            <a
-                class="social"
-                href="https://x.com/"
-                target="_blank"
-                rel="noopener">
-
-                <i class="fa-brands fa-x-twitter"></i>
-
-            </a>
-
+          <div class="hero-note"
+               data-fa="فراتر از یک پروفایل؛ یک امضای خاص"
+               data-en="NOT JUST A PROFILE — IT'S A STATEMENT">
+            فراتر از یک پروفایل؛ یک امضای خاص
+          </div>
         </div>
 
-    </div>
+        <div class="portrait-zone">
+          <div class="orbit"></div>
 
-
-    <!-- FOOTER -->
-
-    <div class="footer">
-
-        AMIRALI ASGHARI © 2026
-
-    </div>
-
-</main>
-
-
-<!-- ================= MODAL ================= -->
-
-<div
-    class="modal"
-    id="secretModal">
-
-    <div class="modal-box">
-
-        <button
-            class="close"
-            onclick="closeModal()">
-
-            ×
-
-        </button>
-
-
-        <div class="modal-title">
-
-            <i class="fa-solid fa-qrcode"></i>
-
-            QR CODE
-
+          <div class="avatar-wrap">
+            <div class="avatar-fallback">AS</div>
+            <img class="avatar"
+                 src="profile.jpg"
+                 alt="تصویر پروفایل امیر علی اصغری"
+                 onerror="this.style.display='none'">
+          </div>
         </div>
 
+      </div>
 
-        <div class="modal-section">
+      <div class="scroll-cue">SCROLL TO EXPLORE</div>
+    </section>
 
-            <strong>
-
-                <i class="fa-solid fa-link"></i>
-
-                MY WEBSITE
-
-            </strong>
-
-            <div id="qrcode"></div>
-
+    <section class="section" id="about">
+      <div class="section-head">
+        <div>
+          <div class="kicker" data-fa="راه‌های ارتباطی" data-en="THE CONNECTION">راه‌های ارتباطی</div>
+          <h2 data-fa="مستقیم با من در ارتباط باش" data-en="LET'S CONNECT">مستقیم با من در ارتباط باش</h2>
         </div>
 
-    </div>
+        <div class="section-desc"
+             data-fa="بدون واسطه، سریع و مستقیم؛ یکی از راه‌های زیر رو انتخاب کن."
+             data-en="Choose any of the options below to reach me directly.">
+          بدون واسطه، سریع و مستقیم؛ یکی از راه‌های زیر رو انتخاب کن.
+        </div>
+      </div>
 
+      <div class="contact-grid" id="links">
+
+        <a class="contact-card" href="tel:+989962053197">
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 16.9v3a2 2 0 0 1-2.2 2A19.8 19.8 0 0 1 11.2 19a19.4 19.4 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7l.5 3a2 2 0 0 1-.6 1.9L7.1 10.5a16 16 0 0 0 6 6l1.9-1.9a2 2 0 0 1 1.9-.6l3 .5a2 2 0 0 1 2.1 2.4z"/>
+            </svg>
+          </div>
+          <strong data-fa="تماس مستقیم" data-en="PHONE">تماس مستقیم</strong>
+          <small dir="ltr">+98 996 205 3197</small>
+          <span class="arrow">↗</span>
+        </a>
+
+        <a class="contact-card"
+           href="https://t.me/Am_xo_ir"
+           target="_blank" rel="noopener noreferrer">
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-label="Telegram">
+              <path d="M21.8 3.2 18.6 20c-.2 1.2-.9 1.5-1.8.9l-5-3.7-2.4 2.3c-.3.3-.5.5-1 .5l.4-5.1 9.3-8.4c.4-.4-.1-.6-.6-.2L6 13.6l-4.9-1.5c-1.1-.3-1.1-1.1.2-1.6L20.4 3c.9-.3 1.7.2 1.4 1.2Z"/>
+            </svg>
+          </div>
+          <strong>Telegram</strong>
+          <small dir="ltr">@Am_xo_ir@</small>
+          <span class="arrow">↗</span>
+        </a>
+
+        <a class="contact-card"
+           href="https://instagram.com/amirgk_"
+           target="_blank" rel="noopener noreferrer">
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.8" stroke-linecap="round">
+              <rect x="3" y="3" width="18" height="18" rx="5"/>
+              <circle cx="12" cy="12" r="4"/>
+              <path d="M17.5 6.5h.01"/>
+            </svg>
+          </div>
+          <strong>Instagram</strong>
+          <small dir="ltr">@amirgk_</small>
+          <span class="arrow">↗</span>
+        </a>
+
+        <a class="contact-card"
+           href="https://wa.me/989962053197"
+           target="_blank" rel="noopener noreferrer">
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-label="WhatsApp">
+              <path d="M20.5 3.5A11.8 11.8 0 0 0 2 17.7L.5 23l5.5-1.4A11.8 11.8 0 0 0 20.5 3.5ZM12 21a9 9 0 0 1-4.6-1.3l-.3-.2-3.3.9.9-3.2-.2-.3A9 9 0 1 1 12 21Zm4.9-6.7c-.3-.2-1.7-.9-2-1s-.5-.2-.7.2-.8 1-1 1.2-.4.2-.7.1a7.3 7.3 0 0 1-2.2-1.4 8.2 8.2 0 0 1-1.5-1.9c-.2-.3 0-.5.1-.6l.5-.6c.2-.2.2-.4.3-.5s0-.4 0-.6-.7-1.7-1-2.3c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4s-1.1 1.1-1.1 2.6 1.1 3 1.3 3.2a11.5 11.5 0 0 0 4.4 3.9c.6.3 1.1.4 1.5.5.6.2 1.2.2 1.7.1.5-.1 1.7-.7 1.9-1.4s.2-1.3.2-1.4-.2-.2-.5-.4Z"/>
+            </svg>
+          </div>
+          <strong>WhatsApp</strong>
+          <small dir="ltr">+98 996 205 3197</small>
+          <span class="arrow">↗</span>
+        </a>
+
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <strong>01</strong>
+          <span>ONE UNIQUE IDENTITY</span>
+        </div>
+        <div class="stat">
+          <strong>24/7</strong>
+          <span>DIGITAL PRESENCE</span>
+        </div>
+        <div class="stat">
+          <strong>∞</strong>
+          <span>ROOM TO CREATE</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="omega" id="omega">
+      <div>
+        <div class="kicker">A DIFFERENT EXPERIENCE</div>
+        <h2>OMEGA</h2>
+        <p data-fa="وارد دنیای OMEGA شو؛ یک تجربه‌ی متفاوت با امضای خاص خودش."
+           data-en="Step into the world of OMEGA — a distinctive digital experience.">
+          وارد دنیای OMEGA شو؛ یک تجربه‌ی متفاوت با امضای خاص خودش.
+        </p>
+      </div>
+
+      <a class="btn"
+         href="https://omegawebb.github.io/OMEGA/"
+         target="_blank" rel="noopener noreferrer"
+         data-fa="ورود به OMEGA ↗" data-en="VISIT OMEGA ↗">
+        ورود به OMEGA ↗
+      </a>
+    </section>
+
+    <footer>
+      <span>© <span id="year"></span> <b>AMIR ALI ASGHARI</b></span>
+      <span>DESIGNED IN THE DARK ✦</span>
+    </footer>
+
+  </main>
 </div>
 
-
-<!-- TOAST -->
-
-<div
-    class="toast"
-    id="toast">
-</div>
-
+<audio id="ambientAudio" src="ambient.mp3" loop preload="none"></audio>
+<div class="toast" id="toast" role="status"></div>
 
 <script>
+/* ذرات نورانی */
+const particles = document.getElementById("particles");
 
-/* ================= STARS ================= */
-
-const stars =
-document.getElementById("stars");
-
-for(let i=0;i<40;i++){
-
-    const star =
-        document.createElement("div");
-
-    star.className="star";
-
-    star.style.left =
-        Math.random()*100+"%";
-
-    star.style.animationDuration =
-        (7+Math.random()*12)+"s";
-
-    star.style.animationDelay =
-        (-Math.random()*15)+"s";
-
-    star.style.opacity =
-        Math.random();
-
-    stars.appendChild(star);
+for (let i = 0; i < 40; i++) {
+  const particle = document.createElement("i");
+  particle.className = "particle";
+  particle.style.left = Math.random() * 100 + "%";
+  particle.style.top = Math.random() * 100 + "%";
+  particle.style.animationDelay = -Math.random() * 7 + "s";
+  particle.style.animationDuration = 5 + Math.random() * 8 + "s";
+  particles.appendChild(particle);
 }
 
+document.getElementById("year").textContent = new Date().getFullYear();
 
-/* ================= 3D CARD ================= */
+/* تغییر زبان */
+function setLanguage(lang) {
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === "fa" ? "rtl" : "ltr";
 
-const card =
-document.getElementById("card");
+  document.querySelectorAll("[data-fa][data-en]").forEach(el => {
+    el.textContent = el.getAttribute(
+      lang === "fa" ? "data-fa" : "data-en"
+    );
+  });
 
-document.addEventListener(
-    "mousemove",
-    e=>{
+  document.querySelectorAll(".language-switch button").forEach(btn => {
+    const active =
+      (lang === "fa" && btn.textContent.trim() === "فا") ||
+      (lang === "en" && btn.textContent.trim() === "EN");
 
-        if(window.innerWidth<700)
-            return;
+    btn.classList.toggle("active", active);
+  });
+}
 
-        const x =
-            (window.innerWidth/2-e.clientX)/100;
+/* موزیک */
+const audio = document.getElementById("ambientAudio");
+const musicButton = document.getElementById("musicButton");
+const soundToggle = document.getElementById("soundToggle");
+const musicLabel = document.getElementById("musicLabel");
+const toast = document.getElementById("toast");
+let toastTimer;
 
-        const y =
-            (window.innerHeight/2-e.clientY)/100;
+function showToast(message) {
+  toast.textContent = message;
+  toast.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove("show"), 3200);
+}
 
-        card.style.transform =
-            `rotateY(${x}deg) rotateX(${y}deg)`;
-
+async function toggleMusic() {
+  if (audio.paused) {
+    try {
+      await audio.play();
+      musicButton.textContent = "Ⅱ";
+      musicLabel.textContent = "NOW PLAYING";
+    } catch (error) {
+      showToast("فایل ambient.mp3 را کنار فایل HTML قرار بده تا موسیقی پخش شود.");
     }
-);
-
-
-/* ================= MAGNETIC BUTTONS ================= */
-
-document
-.querySelectorAll(".btn")
-.forEach(btn=>{
-
-    btn.addEventListener(
-        "mousemove",
-        e=>{
-
-            if(window.innerWidth<700)
-                return;
-
-            const rect =
-                btn.getBoundingClientRect();
-
-            const x =
-                e.clientX -
-                rect.left -
-                rect.width/2;
-
-            const y =
-                e.clientY -
-                rect.top -
-                rect.height/2;
-
-            btn.style.transform =
-                `translate(
-                    ${x*.025}px,
-                    ${y*.025}px
-                )`;
-
-        }
-    );
-
-
-    btn.addEventListener(
-        "mouseleave",
-        ()=>{
-
-            btn.style.transform="";
-
-        }
-    );
-
-});
-
-
-/* ================= RIPPLE ================= */
-
-document
-.querySelectorAll(
-    ".btn,.quick-btn,.extra-btn,.social"
-)
-.forEach(element=>{
-
-    element.addEventListener(
-        "click",
-        function(e){
-
-            if(
-                getComputedStyle(this)
-                .position==="static"
-            ){
-
-                this.style.position="relative";
-
-            }
-
-
-            const rect =
-                this.getBoundingClientRect();
-
-            const ripple =
-                document.createElement("span");
-
-            const size =
-                Math.max(
-                    rect.width,
-                    rect.height
-                );
-
-            ripple.style.position="absolute";
-
-            ripple.style.width =
-                size+"px";
-
-            ripple.style.height =
-                size+"px";
-
-            ripple.style.borderRadius="50%";
-
-            ripple.style.background =
-                "rgba(255,255,255,.18)";
-
-            ripple.style.left =
-                (
-                    e.clientX -
-                    rect.left -
-                    size/2
-                )+"px";
-
-            ripple.style.top =
-                (
-                    e.clientY -
-                    rect.top -
-                    size/2
-                )+"px";
-
-            ripple.style.pointerEvents="none";
-
-            ripple.style.transform="scale(0)";
-
-            ripple.style.transition =
-                "transform .6s,opacity .6s";
-
-            this.appendChild(ripple);
-
-
-            requestAnimationFrame(()=>{
-
-                ripple.style.transform =
-                    "scale(2)";
-
-                ripple.style.opacity="0";
-
-            });
-
-
-            setTimeout(
-                ()=>ripple.remove(),
-                700
-            );
-
-        }
-    );
-
-});
-
-
-/* ================= COPY ================= */
-
-function copyText(text,label){
-
-    if(navigator.clipboard){
-
-        navigator.clipboard
-        .writeText(text)
-        .then(()=>{
-
-            showToast(
-                label+" کپی شد ✓"
-            );
-
-        });
-
-    }else{
-
-        showToast(text);
-
-    }
-
+  } else {
+    audio.pause();
+    musicButton.textContent = "▶";
+    musicLabel.textContent = "AMBIENT MODE";
+  }
 }
 
-
-/* ================= SAVE CONTACT ================= */
-
-function saveContact(){
-
-    const vcard =
-`BEGIN:VCARD
-VERSION:3.0
-FN:Amirali Asghari
-TEL;TYPE=CELL:+989962053197
-EMAIL:amirgk005@gmail.com
-URL:https://instagram.com/_amirgk
-NOTE:Telegram: https://t.me/Am_xo_ir
-END:VCARD`;
-
-    const blob =
-        new Blob(
-            [vcard],
-            {
-                type:"text/vcard"
-            }
-        );
-
-    const url =
-        URL.createObjectURL(blob);
-
-    const a =
-        document.createElement("a");
-
-    a.href=url;
-
-    a.download =
-        "Amirali-Asghari.vcf";
-
-    a.click();
-
-    URL.revokeObjectURL(url);
-
-    showToast(
-        "مخاطب آماده ذخیره شد ✓"
-    );
-
-}
-
-
-/* ================= SHARE ================= */
-
-async function sharePage(){
-
-    if(navigator.share){
-
-        try{
-
-            await navigator.share({
-
-                title:
-                    "Amirali Asghari",
-
-                text:
-                    "Digital Contact Card",
-
-                url:
-                    location.href
-
-            });
-
-        }catch(e){}
-
-    }else{
-
-        copyText(
-            location.href,
-            "لینک صفحه"
-        );
-
-    }
-
-}
-
-
-/* ================= QR ================= */
-
-function openQR(){
-
-    document
-        .getElementById("secretModal")
-        .classList
-        .add("show");
-
-    generateQR();
-
-}
-
-
-function generateQR(){
-
-    const box =
-        document.getElementById("qrcode");
-
-    box.innerHTML="";
-
-
-    const img =
-        document.createElement("img");
-
-    img.src =
-        "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data="+
-        encodeURIComponent(location.href);
-
-    img.alt="QR Code";
-
-    box.appendChild(img);
-
-}
-
-
-/* ================= INSTALL ================= */
-
-function showInstallInfo(){
-
-    showToast(
-        "از منوی مرورگر گزینه Add to Home Screen را بزن"
-    );
-
-}
-
-
-/* ================= CLOSE MODAL ================= */
-
-function closeModal(){
-
-    document
-        .getElementById("secretModal")
-        .classList
-        .remove("show");
-
-}
-
-
-document
-.getElementById("secretModal")
-.addEventListener(
-    "click",
-    e=>{
-
-        if(
-            e.target ===
-            document.getElementById("secretModal")
-        ){
-
-            closeModal();
-
-        }
-
-    }
-);
-
-
-/* ================= VIBRATION ================= */
-
-document
-.querySelectorAll(
-    ".btn,.quick-btn,.extra-btn,.social"
-)
-.forEach(el=>{
-
-    el.addEventListener(
-        "click",
-        ()=>{
-
-            if(navigator.vibrate){
-
-                navigator.vibrate(12);
-
-            }
-
-        }
-    );
-
-});
-
-
-/* ================= TOAST ================= */
-
-function showToast(message){
-
-    const toast =
-        document.getElementById("toast");
-
-    toast.innerText=message;
-
-    toast.classList.add("show");
-
-    clearTimeout(
-        window.toastTimer
-    );
-
-    window.toastTimer =
-        setTimeout(
-            ()=>{
-
-                toast.classList
-                    .remove("show");
-
-            },
-            2200
-        );
-
-}
-
+musicButton.addEventListener("click", toggleMusic);
+soundToggle.addEventListener("click", toggleMusic);
 </script>
 
 </body>
